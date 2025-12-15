@@ -1,0 +1,2 @@
+# Global configuration
+spring.jpa-open-in-view=false
