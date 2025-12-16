@@ -1,0 +1,29 @@
+# Discovery Service - Production Profile
+
+eureka:
+  server:
+    # Enable self-preservation in production (protects against network partitions)
+    enable-self-preservation: true
+
+    # Standard eviction interval in production
+    eviction-interval-timer-in-ms: 60000
+
+  instance:
+    # Standard heartbeat in production
+    lease-renewal-interval-in-seconds: 30
+    lease-expiration-duration-in-seconds: 90
+
+    # Use hostname in production
+    hostname: ${EUREKA_HOSTNAME:localhost}
+    prefer-ip-address: false
+
+  client:
+    service-url:
+      # Support environment variable for Eureka URL
+      defaultZone: ${EUREKA_SERVER_URL:http://${eureka.instance.hostname}:${server.port}/eureka/}
+
+# Minimal logging in production
+logging:
+  level:
+    com.netflix.eureka: WARN
+    com.netflix.discovery: WARN

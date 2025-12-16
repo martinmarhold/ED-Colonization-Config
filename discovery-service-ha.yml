@@ -1,0 +1,65 @@
+# Discovery Service - High Availability Configuration
+# This profile enables peer awareness for running multiple Eureka instances
+
+# NOTE: To use HA mode, you need to run multiple instances with different profiles:
+# Instance 1: --spring.profiles.active=prod,ha,peer1 --server.port=8761
+# Instance 2: --spring.profiles.active=prod,ha,peer2 --server.port=8762
+
+---
+# Peer 1 Configuration
+spring:
+  config:
+    activate:
+      on-profile: peer1
+
+eureka:
+  instance:
+    hostname: eureka-peer1
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-peer2:8762/eureka/
+
+server:
+  port: 8761
+
+---
+# Peer 2 Configuration
+spring:
+  config:
+    activate:
+      on-profile: peer2
+
+eureka:
+  instance:
+    hostname: eureka-peer2
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-peer1:8761/eureka/
+
+server:
+  port: 8762
+
+---
+# Common HA Settings
+spring:
+  config:
+    activate:
+      on-profile: ha
+
+eureka:
+  server:
+    # Enable self-preservation in HA mode
+    enable-self-preservation: true
+
+    # Peer replication settings
+    wait-time-in-ms-when-sync-empty: 5000
+
+  instance:
+    # Prefer IP address for peer communication
+    prefer-ip-address: true

@@ -1,0 +1,50 @@
+# Discovery Service (Eureka Server) Configuration
+
+server:
+  port: 8761
+
+spring:
+  application:
+    name: discovery-service
+
+# Eureka server configuration
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: false
+
+  client:
+    # Standalone mode - don't register with itself
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+  server:
+    # Response cache settings
+    response-cache-update-interval-ms: 5000
+    response-cache-auto-expiration-in-seconds: 180
+
+    # Enable self-preservation by default (disabled in dev profile)
+    enable-self-preservation: true
+
+    # Eviction settings
+    eviction-interval-timer-in-ms: 10000
+
+    # Renewal settings
+    renewal-percent-threshold: 0.85
+    renewal-threshold-update-interval-ms: 900000
+
+    # Peer replication settings
+    max-threads-for-peer-replication: 20
+    min-threads-for-peer-replication: 5
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+  endpoint:
+    health:
+      show-details: always
