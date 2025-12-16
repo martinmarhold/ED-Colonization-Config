@@ -1,0 +1,23 @@
+# Galaxy Data Service specific configuration
+
+server:
+  port: 8083
+
+spring:
+  application:
+    name: galaxy-data-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edcp_galaxy
+    username: edcp_user
+    password: edcp_pass
+    hikari:
+      maximum-pool-size: 30  # Higher pool for heavy read operations
+      minimum-idle: 10
+
+# RabbitMQ configuration for EDDN integration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest

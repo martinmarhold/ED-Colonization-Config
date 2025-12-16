@@ -1,0 +1,31 @@
+# Auth Service specific configuration
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edcp_auth
+    username: edcp_user
+    password: edcp_pass
+
+# JWT configuration
+jwt:
+  secret: edcp-ultra-secret-jwt-signing-key-change-in-production-must-be-256-bits-minimum
+  expiration: 86400000  # 24 hours in milliseconds
+  refresh-expiration: 604800000  # 7 days in milliseconds
+
+# Authentication settings
+auth:
+  max-failed-attempts: 5
+  lock-duration-minutes: 30
+
+# API Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

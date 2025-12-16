@@ -1,0 +1,89 @@
+# API Gateway specific configuration
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  # Gateway routes configuration
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      # Route definitions
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=0
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - StripPrefix=2
+
+        - id: galaxy-data-service
+          uri: lb://galaxy-data-service
+          predicates:
+            - Path=/api/galaxy/**
+          filters:
+            - StripPrefix=2
+
+        - id: colonization-analysis-service
+          uri: lb://colonization-analysis-service
+          predicates:
+            - Path=/api/analysis/**
+          filters:
+            - StripPrefix=2
+
+        - id: station-planning-service
+          uri: lb://station-planning-service
+          predicates:
+            - Path=/api/planning/**
+          filters:
+            - StripPrefix=2
+
+        - id: progress-tracking-service
+          uri: lb://progress-tracking-service
+          predicates:
+            - Path=/api/projects/**
+          filters:
+            - StripPrefix=2
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - StripPrefix=2
+
+      # CORS configuration
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins:
+              - http://localhost:3000
+              - http://localhost:4200
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowed-headers: "*"
+            allow-credentials: true
+
+# JWT configuration (must match auth-service)
+jwt:
+  secret: edcp-ultra-secret-jwt-signing-key-change-in-production-must-be-256-bits-minimum
+  expiration-seconds: 86400
+  refresh-expiration-seconds: 604800

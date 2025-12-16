@@ -1,0 +1,13 @@
+# User Service specific configuration
+
+server:
+  port: 8082
+
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/edcp_users
+    username: edcp_user
+    password: edcp_pass
