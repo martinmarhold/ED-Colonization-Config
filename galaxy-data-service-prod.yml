@@ -1,0 +1,36 @@
+# Galaxy Data Service Production Environment Configuration
+
+spring:
+  jpa:
+    show-sql: false  # Disable SQL logging in production
+    hibernate:
+      ddl-auto: validate  # Only validate schema in production, don't auto-update
+
+  # Production database with connection pooling optimized
+  datasource:
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 20
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  cache:
+    redis:
+      time-to-live: 900000  # 15 minutes cache in production
+
+# Minimal logging in production
+logging:
+  level:
+    com.edcp.galaxydataservice: INFO
+    org.hibernate: WARN
+
+# Security and monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics  # Limit exposed endpoints in production
+  endpoint:
+    health:
+      show-details: when-authorized  # Only show details to authorized users

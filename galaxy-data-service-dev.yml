@@ -1,0 +1,19 @@
+# Galaxy Data Service Development Environment Configuration
+
+spring:
+  jpa:
+    show-sql: true  # Enable SQL logging in dev
+    properties:
+      hibernate:
+        format_sql: true
+
+  cache:
+    redis:
+      time-to-live: 300000  # 5 minutes cache in dev (shorter for testing)
+
+# Enable detailed logging in dev
+logging:
+  level:
+    com.edcp.galaxydataservice: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

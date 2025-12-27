@@ -69,3 +69,8 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+# API Gateway URL
+api:
+  gateway:
+    url: http://localhost:8080
