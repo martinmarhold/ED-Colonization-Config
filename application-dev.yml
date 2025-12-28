@@ -8,10 +8,10 @@ spring:
       ddl-auto: update
 
 # Database configuration for development
-  datasource:
-    url: jdbc:postgresql://localhost:5432/edcp_${spring.application.name:default}
-    username: edcp_user
-    password: edcp_pass
+ # datasource:
+ #   url: jdbc:postgresql://localhost:5432/edcp_${spring.application.name:default}
+ #   username: edcp_user
+ #   password: edcp_pass
 
 # Redis configuration for development
   data:
