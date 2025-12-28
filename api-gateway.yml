@@ -38,6 +38,20 @@ spring:
           filters:
             - StripPrefix=2
 
+        - id: eddn-collector-service
+          uri: lb://eddn-collector-service
+          predicates:
+            - Path=/api/eddn/collector/**
+          filters:
+            - StripPrefix=3
+
+        - id: eddn-processor-service
+          uri: lb://eddn-processor-service
+          predicates:
+            - Path=/api/eddn/processor/**
+          filters:
+            - StripPrefix=3
+
         - id: colonization-analysis-service
           uri: lb://colonization-analysis-service
           predicates:
