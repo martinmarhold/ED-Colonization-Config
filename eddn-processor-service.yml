@@ -1,0 +1,79 @@
+# EDDN Processor Service Configuration
+
+server:
+  port: 8083
+
+spring:
+  application:
+    name: eddn-processor-service
+
+  # RabbitMQ configuration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: edcp_user
+    password: edcp_pass
+    listener:
+      simple:
+        acknowledge-mode: manual
+        concurrency: 5
+        max-concurrency: 10
+        prefetch: 10
+        retry:
+          enabled: true
+          initial-interval: 1000
+          max-attempts: 3
+          max-interval: 10000
+          multiplier: 2.0
+
+# EDDN Processor specific configuration
+eddn:
+  processor:
+    enabled: true
+    batch-size: 100
+    batch-timeout-ms: 5000
+    metrics-log-interval: 60000
+
+  rabbitmq:
+    queue: eddn.raw
+    dlx-queue: eddn.dlx.dead-letter
+
+  galaxy-service:
+    base-url: http://galaxy-data-service:8081
+    timeout: 30000
+    retry:
+      max-attempts: 3
+      backoff-delay: 1000
+
+# Eureka client configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.edcp.eddnprocessor: DEBUG
+    org.springframework.amqp: INFO
+    org.springframework.web.reactive: INFO

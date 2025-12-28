@@ -1,0 +1,66 @@
+# EDDN Collector Service Configuration
+
+server:
+  port: 8082
+
+spring:
+  application:
+    name: eddn-collector-service
+
+  # RabbitMQ configuration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: edcp_user
+    password: edcp_pass
+
+# EDDN specific configuration
+eddn:
+  zeromq:
+    endpoint: tcp://eddn.edcd.io:9500
+    connection-timeout: 30000
+    reconnect-delay: 5000
+
+  rabbitmq:
+    exchange: eddn.raw.exchange
+    routing-key: eddn.raw
+    queue: eddn.raw
+    dlx-exchange: eddn.dlx.exchange
+    dlx-routing-key: eddn.dlx
+    dlx-queue: eddn.dlx.dead-letter
+
+  collector:
+    buffer-size: 1000
+    metrics-log-interval: 60000
+
+# Eureka client configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.edcp.eddncollector: DEBUG
+    org.zeromq: INFO
